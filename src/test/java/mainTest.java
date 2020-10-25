@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class mainTest {
@@ -10,12 +12,12 @@ class mainTest {
     }
 
     @Test
-    void DoesBoardUpdateCorrectly(){
-
+    void DoesBoardReadInCorrectly(){
+    main.readBoard();
     }
 
     @Test
-    void DoesBoardReadInCorrectly(){
+    void DoesBoardUpdateCorrectly(){
 
     }
 
@@ -30,7 +32,7 @@ class mainTest {
     }
 
     @Test
-    void DoCellsLiveInGoodConditions(){
+    void DoCellsStayAliveInGoodConditions(){
 
     }
 
