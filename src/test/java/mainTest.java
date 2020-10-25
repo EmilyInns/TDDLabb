@@ -22,6 +22,11 @@ class mainTest {
     }
 
     @Test
+    void DoCellsKnowTheirNeighboursStates(){
+
+    }
+
+    @Test
     void DoCellsDieOfUnderpop(){
 
     }
