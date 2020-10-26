@@ -44,8 +44,10 @@ public class Main {
         }
     }
 
-    public int numberOfLivingNeighbours(int listIndex, int subIndex){
+    public int numberOfLivingNeighbours(Piece piece){
         int numberOfLivingNeighbours = 0;
+        int listIndex = piece.getListIndex();
+        int subIndex = piece.getSubIndex();
         if (isCellAlive(listIndex-1, subIndex-1)) numberOfLivingNeighbours++;
         if (isCellAlive(listIndex-1, subIndex)) numberOfLivingNeighbours++;
         if (isCellAlive(listIndex-1, subIndex+1)) numberOfLivingNeighbours++;
@@ -84,30 +86,40 @@ public class Main {
              ) {
             for (Piece piece: list
                  ) {
-                checkIfCellStateNeedsUpdating(board.indexOf(list),list.indexOf(piece));
+                Piece pieceToCheck = new Piece(board.indexOf(list),list.indexOf(piece));
+                //TODO: Change this lol
+                checkIfCellStateNeedsUpdating(pieceToCheck);
             }
         }
         generation++;
     }
 
-    public void checkIfCellStateNeedsUpdating(int listIndex, int subIndex){
+    public void checkIfCellStateNeedsUpdating(Piece piece){
+        int listIndex = piece.getListIndex();
+        int subIndex = piece.getSubIndex();
         boolean isAlive = board.get(listIndex).get(subIndex).equals('*');
         if (isAlive){
-            doesCellDieFromOverOrUnderPop(listIndex, subIndex);
+            doesCellDieFromOverOrUnderPop(piece);
         }
         else{
-            doesCellRevive(listIndex,subIndex);
+            doesCellRevive(piece);
         }
     }
 
-    private void doesCellRevive(int listIndex, int subIndex) {
-        if (numberOfLivingNeighbours(listIndex,subIndex)==3){
+    private void doesCellRevive(Piece piece) {
+        int listIndex = piece.getListIndex();
+        int subIndex = piece.getSubIndex();
+
+
+        if (numberOfLivingNeighbours(piece)==3){
             changeCellState(listIndex, subIndex);
         }
     }
 
-    private void doesCellDieFromOverOrUnderPop(int listIndex, int subIndex) {
-        if ((numberOfLivingNeighbours(listIndex,subIndex)<2)||(numberOfLivingNeighbours(listIndex,subIndex)>3)){
+    private void doesCellDieFromOverOrUnderPop(Piece piece) {
+        int listIndex = piece.getListIndex();
+        int subIndex = piece.getSubIndex();
+        if ((numberOfLivingNeighbours(piece)<2)||(numberOfLivingNeighbours(piece)>3)){
             changeCellState(listIndex,subIndex);
         }
     }

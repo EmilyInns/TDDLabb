@@ -36,7 +36,8 @@ class mainTest {
     void DoCellsKnowTheirNeighboursStates(){
         Main main = new Main();
         main.readBoard();
-        assertEquals(2,main.numberOfLivingNeighbours(0,2));
+        Piece piece = new Piece(0,2);
+        assertEquals(2,main.numberOfLivingNeighbours(piece));
     }
 
     @Test

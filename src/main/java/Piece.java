@@ -5,6 +5,8 @@ public class Piece {
     int listIndex;
     int subIndex;
 
+    //TODO: Refactor getters and setters with different names
+
     public Piece(char charAt) {
         character = charAt;
         isPendingChange = false;
@@ -14,8 +16,14 @@ public class Piece {
     public Piece(char charAt, int list, int sub) {
         character = charAt;
         isPendingChange = false;
-        int listIndex = list;
-        int subIndex = sub;
+        listIndex = list;
+        subIndex = sub;
+    }
+
+    public Piece(int list, int sub) {
+
+        listIndex = list;
+        subIndex = sub;
     }
 
     public char getCharacter() {
@@ -32,5 +40,13 @@ public class Piece {
 
     public void setPendingChange(boolean pendingChange) {
         isPendingChange = pendingChange;
+    }
+
+    public int getListIndex() {
+        return listIndex;
+    }
+
+    public int getSubIndex() {
+        return subIndex;
     }
 }
