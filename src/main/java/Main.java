@@ -13,6 +13,7 @@ public class Main {
     private int numberOfLines = 0;
     private int numberOfArrays = 0;
     private int lineLength = 0;
+    private int generation = 0;
     public List<List<Character>> board = new ArrayList<List<Character>>();
 
     public void readBoard() {
@@ -31,9 +32,9 @@ public class Main {
                     board.add(mylist);
                     lineLength = curLine.length();
                 }
-                System.out.println(curLine);
             }
             numberOfArrays = numberOfLines-1;
+            generation = 1;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,9 +63,32 @@ public class Main {
 
     }
 
+    public void printBoard(){
+        System.out.println("Generation " + generation + ":");
+        for (List<Character> list :board
+        ) {
+            String line = new String();
+            for (Character cha: list
+            ) {
+                line += cha;
+            }
+            System.out.println(line);
+        }
+    }
+
+    public void updateBoard(){
+        for (List<Character> list :board
+             ) {
+            for (Character cha: list
+                 ) {
+                checkIfCellStateNeedsUpdating(board.indexOf(list),list.indexOf(cha));
+            }
+        }
+        generation++;
+    }
+
     public void checkIfCellStateNeedsUpdating(int listIndex, int subIndex){
         boolean isAlive = board.get(listIndex).get(subIndex).equals('*');
-        boolean isCellStateChanged = false;
         if (isAlive){
             doesCellDieFromOverOrUnderPop(listIndex, subIndex);
         }
@@ -74,7 +98,7 @@ public class Main {
     }
 
     private void doesCellRevive(int listIndex, int subIndex) {
-        if (numberOfLivingNeighbours(listIndex,subIndex)<2){
+        if (numberOfLivingNeighbours(listIndex,subIndex)==3){
             changeCellState(listIndex, subIndex);
         }
     }
