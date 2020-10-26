@@ -12,8 +12,12 @@ class mainTest {
     @Test
     void DoesBoardReadInCorrectly(){
         Main main = new Main();
-    main.readBoard();
-        assertEquals('.', main.board.get(1).get(1));
+        main.readBoard();
+        assertEquals('*', main.board.get(0).get(2));
+        assertEquals('.', main.board.get(1).get(2));
+        assertEquals('*', main.board.get(1).get(6));
+        assertEquals('*', main.board.get(2).get(3));
+        assertEquals('*', main.board.get(3).get(3));
 
     }
 
@@ -24,7 +28,9 @@ class mainTest {
 
     @Test
     void DoCellsKnowTheirNeighboursStates(){
-
+        Main main = new Main();
+        main.readBoard();
+        assertEquals(2,main.numberOfLivingNeighbours(2,2));
     }
 
     @Test
