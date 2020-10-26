@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO: Refactor code with object to remove constant listIndex and subIndex usage
+//TODO: Refactor code so board is List of Pieces
 
 
 public class Main {
@@ -14,7 +15,9 @@ public class Main {
     private int numberOfArrays = 0;
     private int lineLength = 0;
     private int generation = 0;
-    public List<List<Character>> board = new ArrayList<List<Character>>();
+   // public List<List<Character>> board = new ArrayList<List<Character>>();
+   public List<List<Piece>> board = new ArrayList<List<Piece>>();
+
 
     public void readBoard() {
         try{
@@ -24,10 +27,10 @@ public class Main {
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null){
                 numberOfLines++;
-                List<Character> mylist = new ArrayList<>();
+                List<Piece> mylist = new ArrayList<>();
                 if (numberOfLines>1){
                     for (int i = 0; i < curLine.length(); i++) {
-                        mylist.add(curLine.charAt(i));
+                        mylist.add(new Piece(curLine.charAt(i),numberOfLines-1, i));
                     }
                     board.add(mylist);
                     lineLength = curLine.length();
@@ -65,23 +68,23 @@ public class Main {
 
     public void printBoard(){
         System.out.println("Generation " + generation + ":");
-        for (List<Character> list :board
+        for (List<Piece> list :board
         ) {
             String line = new String();
-            for (Character cha: list
+            for (Piece piece: list
             ) {
-                line += cha;
+                line += piece.getCharacter();
             }
             System.out.println(line);
         }
     }
 
     public void updateBoard(){
-        for (List<Character> list :board
+        for (List<Piece> list :board
              ) {
-            for (Character cha: list
+            for (Piece piece: list
                  ) {
-                checkIfCellStateNeedsUpdating(board.indexOf(list),list.indexOf(cha));
+                checkIfCellStateNeedsUpdating(board.indexOf(list),list.indexOf(piece));
             }
         }
         generation++;
@@ -110,11 +113,11 @@ public class Main {
     }
 
     private void changeCellState(int listIndex, int subIndex) {
-        if (board.get(listIndex).get(subIndex).equals('*')){
-            board.get(listIndex).set(subIndex,'.');
+        if (String.valueOf(board.get(listIndex).get(subIndex).getCharacter()).equals("*")){
+            board.get(listIndex).get(subIndex).setCharacter('.');
         }
-        else if (board.get(listIndex).get(subIndex).equals('.')){
-            board.get(listIndex).set(subIndex,'*');
+        else if (String.valueOf(board.get(listIndex).get(subIndex).getCharacter()).equals(".")){
+            board.get(listIndex).get(subIndex).setCharacter('*');
         }
     }
 
