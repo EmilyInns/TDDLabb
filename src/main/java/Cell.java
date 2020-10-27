@@ -1,17 +1,10 @@
 public class Cell {
 
-    char character;
-    boolean isPendingChange;
-    int listIndex;
-    int subIndex;
+    private char character;
+    private boolean isPendingChange;
+    private int listIndex;
+    private int subIndex;
 
-    //TODO: Refactor getters and setters with different names
-
-    public Cell(char charAt) {
-        character = charAt;
-        isPendingChange = false;
-
-    }
 
     public Cell(char charAt, int list, int sub) {
         character = charAt;
@@ -20,17 +13,18 @@ public class Cell {
         subIndex = sub;
     }
 
+    //This constructor is only to be used in tests
     public Cell(int list, int sub) {
-
         listIndex = list;
         subIndex = sub;
+        isPendingChange = false;
     }
 
-    public char getCharacter() {
+    public char character() {
         return character;
     }
 
-    public void setCharacter(char character) {
+    public void changeCharacter(char character) {
         this.character = character;
     }
 
@@ -42,11 +36,11 @@ public class Cell {
         isPendingChange = pendingChange;
     }
 
-    public int getListIndex() {
+    public int listIndex() {
         return listIndex;
     }
 
-    public int getSubIndex() {
+    public int subIndex() {
         return subIndex;
     }
 }

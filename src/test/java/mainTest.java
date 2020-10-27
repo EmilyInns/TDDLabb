@@ -1,7 +1,4 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,44 +8,49 @@ class mainTest {
 
 
     @Test
+    @Disabled("Not really a real test.. print method only exists for me to visually double-check results")
     void DoesBoardPrintCorrectly(){
         main.readBoard();
         main.printBoard();
     }
 
+
+    @BeforeEach
+    void ReadBoard(){
+        main.readBoard();
+    }
+
     @Test
     void DoesBoardReadInCorrectly(){
-        main.readBoard();
-        assertEquals('*', main.board.get(0).get(2).getCharacter());
-        assertEquals('*', main.board.get(1).get(2).getCharacter());
-        assertEquals('*', main.board.get(1).get(6).getCharacter());
-        assertEquals('*', main.board.get(2).get(3).getCharacter());
-        assertEquals('*', main.board.get(3).get(4).getCharacter());
+        assertEquals('*', main.board.get(0).get(2).character());
+        assertEquals('*', main.board.get(1).get(2).character());
+        assertEquals('*', main.board.get(1).get(6).character());
+        assertEquals('*', main.board.get(2).get(3).character());
+        assertEquals('*', main.board.get(3).get(4).character());
 
     }
 
     @Test
     void DoesBoardUpdateCorrectly(){
-        main.readBoard();
-        main.printBoard();
+        assertTrue(main.isCellAlive(0,2));
+        assertTrue(main.isCellAlive(2,3));
+        assertFalse(main.isCellAlive(1,4));
         main.updateBoard();
-        main.printBoard();
-        main.updateBoard();
-        main.printBoard();
-        main.updateBoard();
-        main.printBoard();
+        assertTrue(main.isCellAlive(0,2));
+        assertFalse(main.isCellAlive(2,3));
+        assertTrue(main.isCellAlive(1,4));
+
+
     }
 
     @Test
     void DoCellsKnowTheirNeighboursStates(){
-        main.readBoard();
         Cell cell = new Cell(0,2);
         assertEquals(2,main.numberOfLivingNeighbours(cell));
     }
 
     @Test
     void DoCellsDieOfUnderpop(){
-        main.readBoard();
         main.updateBoard();
         main.updateBoard();
         assertTrue(main.isCellAlive(1,6));
@@ -59,7 +61,6 @@ class mainTest {
 
     @Test
     void DoCellsDieOfOvercrowding(){
-        main.readBoard();
         assertTrue(main.isCellAlive(2,3));
         main.updateBoard();
         assertFalse(main.isCellAlive(2,3));
@@ -67,7 +68,6 @@ class mainTest {
 
     @Test
     void DoCellsStayAliveInGoodConditions(){
-        main.readBoard();
         assertTrue(main.isCellAlive(0,3));
         main.updateBoard();
         assertTrue(main.isCellAlive(0,3));
@@ -75,7 +75,6 @@ class mainTest {
 
     @Test
     void DoCellsReviveWithThreeLivingNeighbours(){
-        main.readBoard();
         assertFalse(main.isCellAlive(2,2));
         main.updateBoard();
         assertTrue(main.isCellAlive(2,2));

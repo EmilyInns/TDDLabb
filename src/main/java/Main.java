@@ -5,9 +5,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Refactor code with object to remove constant listIndex and subIndex usage
-//TODO: Refactor code so board is List of Pieces
-
 
 public class Main {
 
@@ -15,7 +12,7 @@ public class Main {
     private int numberOfArrays = 0;
     private int lineLength = 0;
     private int generation = 0;
-   public List<List<Cell>> board = new ArrayList<List<Cell>>();
+    public List<List<Cell>> board = new ArrayList<>();
 
 
     public void readBoard() {
@@ -26,12 +23,12 @@ public class Main {
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null){
                 numberOfLines++;
-                List<Cell> mylist = new ArrayList<>();
+                List<Cell> myList = new ArrayList<>();
                 if (numberOfLines>1){
                     for (int i = 0; i < curLine.length(); i++) {
-                        mylist.add(new Cell(curLine.charAt(i),numberOfLines-2, i));
+                        myList.add(new Cell(curLine.charAt(i),numberOfLines-2, i));
                     }
-                    board.add(mylist);
+                    board.add(myList);
                     lineLength = curLine.length();
                 }
             }
@@ -45,8 +42,8 @@ public class Main {
 
     public int numberOfLivingNeighbours(Cell cell){
         int numberOfLivingNeighbours = 0;
-        int listIndex = cell.getListIndex();
-        int subIndex = cell.getSubIndex();
+        int listIndex = cell.listIndex();
+        int subIndex = cell.subIndex();
         if (isCellAlive(listIndex-1, subIndex-1)) numberOfLivingNeighbours++;
         if (isCellAlive(listIndex-1, subIndex)) numberOfLivingNeighbours++;
         if (isCellAlive(listIndex-1, subIndex+1)) numberOfLivingNeighbours++;
@@ -63,7 +60,7 @@ public class Main {
         if (listIndex<0||subIndex<0||listIndex>=numberOfArrays||subIndex>=lineLength){
             return false;
         }
-        else return String.valueOf(board.get(listIndex).get(subIndex).getCharacter()).equals("*");
+        else return String.valueOf(board.get(listIndex).get(subIndex).character()).equals("*");
 
     }
 
@@ -75,7 +72,7 @@ public class Main {
             String line = new String();
             for (Cell cell : list
             ) {
-                line += cell.getCharacter();
+                line += cell.character();
             }
             System.out.println(line);
         }
@@ -106,7 +103,7 @@ public class Main {
     }
 
     public void checkIfCellStateNeedsUpdating(Cell cell){
-        boolean isAlive = String.valueOf(cell.getCharacter()).equals("*");
+        boolean isAlive = String.valueOf(cell.character()).equals("*");
         if (isAlive){
             doesCellDieFromOverOrUnderPop(cell);
         }
@@ -129,15 +126,15 @@ public class Main {
     }
 
     private void markCellAsPendingChange(Cell cell){
-        board.get(cell.getListIndex()).get(cell.subIndex).setPendingChange(true);
+        board.get(cell.listIndex()).get(cell.subIndex()).setPendingChange(true);
     }
 
     private void changeCellState(Cell cell) {
-        if (String.valueOf(cell.getCharacter()).equals("*")){
-            cell.setCharacter('.');
+        if (String.valueOf(cell.character()).equals("*")){
+            cell.changeCharacter('.');
         }
-        else if (String.valueOf(cell.getCharacter()).equals(".")){
-            cell.setCharacter('*');
+        else if (String.valueOf(cell.character()).equals(".")){
+            cell.changeCharacter('*');
         }
     }
 
