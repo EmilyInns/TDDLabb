@@ -1,19 +1,23 @@
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class mainTest {
 
+    Main main = new Main();
+
+
     @Test
     void DoesBoardPrintCorrectly(){
-        Main main = new Main();
         main.readBoard();
         main.printBoard();
     }
 
     @Test
     void DoesBoardReadInCorrectly(){
-        Main main = new Main();
         main.readBoard();
         assertEquals('*', main.board.get(0).get(2).getCharacter());
         assertEquals('*', main.board.get(1).get(2).getCharacter());
@@ -25,7 +29,6 @@ class mainTest {
 
     @Test
     void DoesBoardUpdateCorrectly(){
-        Main main = new Main();
         main.readBoard();
         main.printBoard();
         main.updateBoard();
@@ -38,7 +41,6 @@ class mainTest {
 
     @Test
     void DoCellsKnowTheirNeighboursStates(){
-        Main main = new Main();
         main.readBoard();
         Cell cell = new Cell(0,2);
         assertEquals(2,main.numberOfLivingNeighbours(cell));
@@ -46,24 +48,37 @@ class mainTest {
 
     @Test
     void DoCellsDieOfUnderpop(){
-        Main main = new Main();
         main.readBoard();
         main.updateBoard();
+        main.updateBoard();
+        assertTrue(main.isCellAlive(1,6));
+        main.updateBoard();
+        assertFalse(main.isCellAlive(1,6));
+
     }
 
     @Test
     void DoCellsDieOfOvercrowding(){
-
+        main.readBoard();
+        assertTrue(main.isCellAlive(2,3));
+        main.updateBoard();
+        assertFalse(main.isCellAlive(2,3));
     }
 
     @Test
     void DoCellsStayAliveInGoodConditions(){
-
+        main.readBoard();
+        assertTrue(main.isCellAlive(0,3));
+        main.updateBoard();
+        assertTrue(main.isCellAlive(0,3));
     }
 
     @Test
     void DoCellsReviveWithThreeLivingNeighbours(){
-
+        main.readBoard();
+        assertFalse(main.isCellAlive(2,2));
+        main.updateBoard();
+        assertTrue(main.isCellAlive(2,2));
     }
 
 
