@@ -15,8 +15,7 @@ public class Main {
     private int numberOfArrays = 0;
     private int lineLength = 0;
     private int generation = 0;
-   // public List<List<Character>> board = new ArrayList<List<Character>>();
-   public List<List<Piece>> board = new ArrayList<List<Piece>>();
+   public List<List<Cell>> board = new ArrayList<List<Cell>>();
 
 
     public void readBoard() {
@@ -27,10 +26,10 @@ public class Main {
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null){
                 numberOfLines++;
-                List<Piece> mylist = new ArrayList<>();
+                List<Cell> mylist = new ArrayList<>();
                 if (numberOfLines>1){
                     for (int i = 0; i < curLine.length(); i++) {
-                        mylist.add(new Piece(curLine.charAt(i),numberOfLines-2, i));
+                        mylist.add(new Cell(curLine.charAt(i),numberOfLines-2, i));
                     }
                     board.add(mylist);
                     lineLength = curLine.length();
@@ -44,10 +43,10 @@ public class Main {
         }
     }
 
-    public int numberOfLivingNeighbours(Piece piece){
+    public int numberOfLivingNeighbours(Cell cell){
         int numberOfLivingNeighbours = 0;
-        int listIndex = piece.getListIndex();
-        int subIndex = piece.getSubIndex();
+        int listIndex = cell.getListIndex();
+        int subIndex = cell.getSubIndex();
         if (isCellAlive(listIndex-1, subIndex-1)) numberOfLivingNeighbours++;
         if (isCellAlive(listIndex-1, subIndex)) numberOfLivingNeighbours++;
         if (isCellAlive(listIndex-1, subIndex+1)) numberOfLivingNeighbours++;
@@ -64,29 +63,30 @@ public class Main {
         if (listIndex<0||subIndex<0||listIndex>=numberOfArrays||subIndex>=lineLength){
             return false;
         }
-        else return board.get(listIndex).get(subIndex).equals('*');
+        else return String.valueOf(board.get(listIndex).get(subIndex).getCharacter()).equals("*");
 
     }
 
+
     public void printBoard(){
         System.out.println("Generation " + generation + ":");
-        for (List<Piece> list :board
+        for (List<Cell> list :board
         ) {
             String line = new String();
-            for (Piece piece: list
+            for (Cell cell : list
             ) {
-                line += piece.getCharacter();
+                line += cell.getCharacter();
             }
             System.out.println(line);
         }
     }
 
     public void updateBoard(){
-        for (List<Piece> list :board
+        for (List<Cell> list :board
              ) {
-            for (Piece piece: list
+            for (Cell cell : list
                  ) {
-                checkIfCellStateNeedsUpdating(piece);
+                checkIfCellStateNeedsUpdating(cell);
             }
         }
         updateAllCells();
@@ -94,50 +94,50 @@ public class Main {
     }
 
     private void updateAllCells() {
-        for (List<Piece> list :board
+        for (List<Cell> list :board
         ) {
-            for (Piece piece: list
+            for (Cell cell : list
             ) {
-                if (piece.isPendingChange()){
-                    changeCellState(piece);
+                if (cell.isPendingChange()){
+                    changeCellState(cell);
                 }
             }
         }
     }
 
-    public void checkIfCellStateNeedsUpdating(Piece piece){
-        boolean isAlive = String.valueOf(piece.getCharacter()).equals("*");
+    public void checkIfCellStateNeedsUpdating(Cell cell){
+        boolean isAlive = String.valueOf(cell.getCharacter()).equals("*");
         if (isAlive){
-            doesCellDieFromOverOrUnderPop(piece);
+            doesCellDieFromOverOrUnderPop(cell);
         }
         else{
-            doesCellRevive(piece);
+            doesCellRevive(cell);
         }
     }
 
-    private void doesCellRevive(Piece piece) {
+    private void doesCellRevive(Cell cell) {
 
-        if (numberOfLivingNeighbours(piece)==3){
-            markCellAsPendingChange(piece);
+        if (numberOfLivingNeighbours(cell)==3){
+            markCellAsPendingChange(cell);
         }
     }
 
-    private void doesCellDieFromOverOrUnderPop(Piece piece) {
-        if ((numberOfLivingNeighbours(piece)<2)||(numberOfLivingNeighbours(piece)>3)){
-            markCellAsPendingChange(piece);
+    private void doesCellDieFromOverOrUnderPop(Cell cell) {
+        if ((numberOfLivingNeighbours(cell)<2)||(numberOfLivingNeighbours(cell)>3)){
+            markCellAsPendingChange(cell);
         }
     }
 
-    private void markCellAsPendingChange(Piece piece){
-        board.get(piece.getListIndex()).get(piece.subIndex).setPendingChange(true);
+    private void markCellAsPendingChange(Cell cell){
+        board.get(cell.getListIndex()).get(cell.subIndex).setPendingChange(true);
     }
 
-    private void changeCellState(Piece piece) {
-        if (String.valueOf(piece.getCharacter()).equals("*")){
-            piece.setCharacter('.');
+    private void changeCellState(Cell cell) {
+        if (String.valueOf(cell.getCharacter()).equals("*")){
+            cell.setCharacter('.');
         }
-        else if (String.valueOf(piece.getCharacter()).equals(".")){
-            piece.setCharacter('*');
+        else if (String.valueOf(cell.getCharacter()).equals(".")){
+            cell.setCharacter('*');
         }
     }
 

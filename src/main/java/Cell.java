@@ -1,4 +1,4 @@
-public class Piece {
+public class Cell {
 
     char character;
     boolean isPendingChange;
@@ -7,20 +7,20 @@ public class Piece {
 
     //TODO: Refactor getters and setters with different names
 
-    public Piece(char charAt) {
+    public Cell(char charAt) {
         character = charAt;
         isPendingChange = false;
 
     }
 
-    public Piece(char charAt, int list, int sub) {
+    public Cell(char charAt, int list, int sub) {
         character = charAt;
         isPendingChange = false;
         listIndex = list;
         subIndex = sub;
     }
 
-    public Piece(int list, int sub) {
+    public Cell(int list, int sub) {
 
         listIndex = list;
         subIndex = sub;
